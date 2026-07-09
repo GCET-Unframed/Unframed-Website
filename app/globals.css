@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* Unframed palette — continuous sky-blue-to-white gradient, orange + royal blue accents */
+  --color-charcoal: #1f1b16;
+  --color-stone: #5b6478;
+
+  --color-sky: #cfe6ff;
+  --color-sky-soft: #eaf4ff;
+
+  --color-royal: #2b4fe0;
+  --color-royal-deep: #1c3bc0;
+  --color-royal-soft: #dce6ff;
+
+  --color-orange: #f4692d;
+  --color-orange-deep: #d9541c;
+  --color-orange-soft: #ffe4d2;
+
+  --font-sans: var(--font-figtree);
+  --font-display: var(--font-grotesk);
+  --font-serif: var(--font-lora);
+}
+
+/* One continuous gradient behind the whole page — painted on the root
+   element (not body) so it sizes to the full document height instead of
+   being clamped to one viewport by html's height. Sections never paint a
+   solid background over it, so there are no hard color-block breaks. */
+html {
+  background: linear-gradient(
+    180deg,
+    var(--color-sky) 0%,
+    var(--color-sky-soft) 32%,
+    #ffffff 68%,
+    #ffffff 100%
+  );
+}
+
+body {
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-royal);
+  color: #ffffff;
+}
+
+/* Hero entrance — pure CSS so it plays on load without waiting on
+   JS hydration or IntersectionObserver (framer-motion's whileInView
+   can stall in throttled/backgrounded tabs). */
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
