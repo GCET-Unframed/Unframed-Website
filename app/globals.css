@@ -16,6 +16,9 @@
   --color-orange-deep: #d9541c;
   --color-orange-soft: #ffe4d2;
 
+  /* Used only for the hero's middle decorative circle. */
+  --color-pink: #ea2e8c;
+
   --font-sans: var(--font-figtree);
   --font-display: var(--font-grotesk);
   --font-serif: var(--font-lora);
@@ -45,13 +48,17 @@ body {
   color: #ffffff;
 }
 
-/* Hero entrance — pure CSS so it plays on load without waiting on
-   JS hydration or IntersectionObserver (framer-motion's whileInView
-   can stall in throttled/backgrounded tabs). */
+/* Entrance animations — pure CSS everywhere (hero AND every FadeIn
+   instance sitewide) so they always play on load/navigation without
+   waiting on JS hydration or IntersectionObserver (framer-motion's
+   whileInView can stall in throttled/backgrounded tabs, which is why
+   animations were intermittently not firing). --fade-y / --fade-scale
+   are set per-instance via inline style so one keyframe covers every
+   caller's chosen distance/scale. */
 @keyframes fade-slide-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(var(--fade-y, 20px));
   }
   to {
     opacity: 1;
@@ -62,10 +69,57 @@ body {
 @keyframes fade-scale-in {
   from {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(var(--fade-scale, 0.8));
   }
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* Decorative circles fly in from a corner with a slight overshoot before
+   settling, instead of just scaling up in place. */
+@keyframes glow-in-top-right {
+  0% {
+    opacity: 0;
+    transform: translate(140px, -140px) scale(0.55);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-10px, 10px) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes glow-in-bottom-left {
+  0% {
+    opacity: 0;
+    transform: translate(-140px, 140px) scale(0.55);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(10px, -10px) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@keyframes glow-in-bottom-right {
+  0% {
+    opacity: 0;
+    transform: translate(140px, 140px) scale(0.55);
+  }
+  65% {
+    opacity: 1;
+    transform: translate(-10px, -10px) scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
   }
 }

@@ -18,7 +18,7 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-charcoal/10 bg-white/70 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-white/40 bg-white/60 backdrop-blur-lg">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
         <Wordmark className="text-2xl" />
 
@@ -73,7 +73,7 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {open && (
-        <ul className="border-t border-charcoal/10 bg-white/90 px-5 pb-4 pt-2 sm:hidden">
+        <ul className="border-t border-white/40 bg-white/70 px-5 pb-4 pt-2 backdrop-blur-lg sm:hidden">
           {links.map(({ href, label }) => {
             const active = pathname === href;
             return (

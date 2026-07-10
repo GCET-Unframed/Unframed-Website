@@ -6,14 +6,18 @@ export const metadata: Metadata = {
   description: "The students behind Unframed.",
 };
 
-// PLACEHOLDER team slots — replace names, roles, and initials with real people.
 const members = [
-  { initials: "01", name: "[Team member name]", role: "[Role]", avatar: "bg-orange text-white" },
-  { initials: "02", name: "[Team member name]", role: "[Role]", avatar: "bg-royal text-white" },
-  { initials: "03", name: "[Team member name]", role: "[Role]", avatar: "bg-orange text-white" },
-  { initials: "04", name: "[Team member name]", role: "[Role]", avatar: "bg-royal text-white" },
-  { initials: "05", name: "[Team member name]", role: "[Role]", avatar: "bg-orange text-white" },
-  { initials: "06", name: "[Team member name]", role: "[Role]", avatar: "bg-royal text-white" },
+  { initials: "01", name: "Saanj Rao", role: "Executive Director", avatar: "bg-orange text-white" },
+  { initials: "02", name: "Sarah Zhang", role: "Executive Director", avatar: "bg-royal text-white" },
+  { initials: "03", name: "Jay Huo", role: "Director of Technology", avatar: "bg-orange text-white" },
+  { initials: "04", name: "Mylan Gardner", role: "Director of Research & Outreach", avatar: "bg-royal text-white" },
+  { initials: "05", name: "Pearson Wu", role: "Director of Technology", avatar: "bg-orange text-white" },
+  { initials: "06", name: "Stephanie Chen", role: "Director of Research", avatar: "bg-royal text-white" },
+];
+
+const advisors = [
+  { initials: "01", name: "Ting Su", avatar: "bg-royal text-white" },
+  { initials: "02", name: "Gang Liu", avatar: "bg-orange text-white" },
 ];
 
 export default function Team() {
@@ -31,7 +35,7 @@ export default function Team() {
           </p>
         </FadeIn>
 
-        <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2">
           {members.map(({ initials, name, role, avatar }, i) => (
             <FadeIn key={initials} delay={i * 0.06}>
               <div className="flex items-center gap-5">
@@ -44,6 +48,26 @@ export default function Team() {
                   <p className="font-display text-lg font-bold">{name}</p>
                   <p className="mt-0.5 text-base text-stone">{role}</p>
                 </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+
+        <FadeIn delay={0.1}>
+          <p className="mt-20 text-sm font-bold uppercase tracking-widest text-stone">
+            Advisors
+          </p>
+        </FadeIn>
+        <div className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2">
+          {advisors.map(({ initials, name, avatar }, i) => (
+            <FadeIn key={initials} delay={i * 0.06}>
+              <div className="flex items-center gap-5">
+                <span
+                  className={`flex h-16 w-16 shrink-0 items-center justify-center rounded-full font-display text-xl font-bold ${avatar}`}
+                >
+                  {initials}
+                </span>
+                <p className="font-display text-lg font-bold">{name}</p>
               </div>
             </FadeIn>
           ))}

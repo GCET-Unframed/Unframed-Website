@@ -83,7 +83,11 @@ export default function About() {
           {coreBeliefs.map(({ statement, detail }, i) => (
             <FadeIn key={statement} delay={i * 0.08}>
               <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-orange font-display text-lg font-bold text-white">
+                <span
+                  className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full font-display text-lg font-bold text-white ${
+                    i === 2 ? "bg-pink" : "bg-orange"
+                  }`}
+                >
                   0{i + 1}
                 </span>
                 <div>
