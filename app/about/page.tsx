@@ -69,17 +69,8 @@ export default function About() {
             Our Core Beliefs
           </p>
         </FadeIn>
-        <FadeIn delay={0.1}>
-          <p className="mt-5 max-w-3xl font-serif text-xl italic text-stone sm:text-2xl">
-            Critical reading is a skill, not an instinct. Most people
-            weren&rsquo;t taught how to spot loaded language or notice a
-            missing perspective. That&rsquo;s not a personal failing —
-            it&rsquo;s a gap in how we learn to read the news. Unframed
-            exists to close that gap.
-          </p>
-        </FadeIn>
 
-        <div className="mt-14 space-y-10">
+        <div className="mt-8 space-y-10">
           {coreBeliefs.map(({ statement, detail }, i) => (
             <FadeIn key={statement} delay={i * 0.08}>
               <div className="flex flex-col gap-5 sm:flex-row sm:items-start">

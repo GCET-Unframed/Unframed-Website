@@ -29,7 +29,7 @@ export default function Team() {
             Our Team
           </h1>
         </FadeIn>
-        <FadeIn delay={0.15}>
+        <FadeIn delay={0.1}>
           <p className="mt-5 max-w-2xl font-serif text-2xl italic text-stone sm:text-3xl">
             Students, unframing the news.
           </p>

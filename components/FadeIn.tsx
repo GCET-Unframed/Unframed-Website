@@ -14,11 +14,12 @@ import type { CSSProperties, ReactNode } from "react";
 export default function FadeIn({
   children = null,
   delay = 0,
-  duration = 0.6,
+  duration = 0.4,
   y = 24,
   x,
   scale,
   ease = "ease-out",
+  immediate = false,
   className,
 }: {
   children?: ReactNode;
@@ -35,12 +36,22 @@ export default function FadeIn({
    * back-out cubic-bezier (e.g. "cubic-bezier(0.34, 1.56, 0.64, 1)") for
    * a slight overshoot-then-settle bounce. */
   ease?: string;
+  /** Reveal on mount instead of waiting for IntersectionObserver. Use
+   * this for elements that are always above the fold (e.g. part of the
+   * hero) — near the viewport edge, an element can fail the intersection
+   * check on first paint and appear to never animate in. */
+  immediate?: boolean;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    if (immediate) {
+      setVisible(true);
+      return;
+    }
+
     const el = ref.current;
     if (!el) return;
 
@@ -55,7 +66,7 @@ export default function FadeIn({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, []);
+  }, [immediate]);
 
   let hiddenTransform: string;
   if (x !== undefined) {

@@ -26,7 +26,7 @@ type HeroAnimName =
 function heroAnim(
   delay: number,
   name: HeroAnimName = "fade-slide-up",
-  duration = 0.7
+  duration = 0.45
 ) {
   return {
     animationName: name,
@@ -54,19 +54,19 @@ export default function Home() {
             A student-led civic initiative
           </p>
           <h1
-            style={heroAnim(0.14)}
+            style={heroAnim(0.09)}
             className="mt-6 font-display text-6xl font-bold leading-[0.95] tracking-tight sm:text-8xl lg:text-9xl"
           >
             Un
             <Framed>framed</Framed>
           </h1>
           <p
-            style={heroAnim(0.28)}
+            style={heroAnim(0.18)}
             className="mt-5 max-w-xl font-serif text-2xl italic text-stone sm:text-3xl"
           >
             Unframe the story. Reframe your own opinion.
           </p>
-          <div style={heroAnim(0.42)} className="mt-10 flex flex-wrap items-center gap-5">
+          <div style={heroAnim(0.27)} className="mt-10 flex flex-wrap items-center gap-5">
             <Link
               href="/try-it"
               className="rounded-full border border-white/30 bg-royal/85 px-8 py-4 text-base font-bold text-white shadow-[0_8px_24px_rgba(43,79,224,0.35)] backdrop-blur-md transition hover:bg-royal-deep/90"
@@ -84,33 +84,40 @@ export default function Home() {
 
         {/* Clean geometric composition — tinted frosted glass, each shape
             flying in from its own corner with a scale overshoot (via
-            FadeIn's x/y/scale/ease props), staggered ~180ms apart. */}
+            FadeIn's x/y/scale/ease props), staggered ~100ms apart.
+            `immediate` fires these on mount rather than waiting on
+            IntersectionObserver — near the viewport edge (like the
+            bottom-right shape), the observer can miss the initial
+            intersection and never fire, leaving it stuck invisible. */}
         <div aria-hidden className="relative mx-auto hidden h-80 w-80 lg:block">
           <FadeIn
+            immediate
             x={140}
             y={-140}
             scale={0.55}
-            duration={0.7}
+            duration={0.45}
             ease="cubic-bezier(0.34, 1.56, 0.64, 1)"
             className="absolute right-0 top-0 h-44 w-44 rounded-full border border-white/40 bg-royal/80 shadow-[0_8px_32px_rgba(43,79,224,0.45)] backdrop-blur-lg"
           />
           <FadeIn
+            immediate
             x={-140}
             y={140}
             scale={0.55}
-            duration={0.7}
-            delay={0.18}
+            duration={0.45}
+            delay={0.1}
             ease="cubic-bezier(0.34, 1.56, 0.64, 1)"
             className="absolute bottom-6 left-0 h-36 w-36 rounded-full border-2 border-white/60 bg-pink/75 shadow-[0_10px_36px_rgba(234,46,140,0.4)] backdrop-blur-lg"
           />
           <FadeIn
+            immediate
             x={140}
             y={140}
             scale={0.55}
-            duration={0.7}
-            delay={0.36}
+            duration={0.45}
+            delay={0.2}
             ease="cubic-bezier(0.34, 1.56, 0.64, 1)"
-            className="absolute bottom-0 right-14 h-20 w-20 rounded-[1.75rem] border border-white/40 bg-orange/80 shadow-[0_8px_28px_rgba(244,105,45,0.45)] backdrop-blur-lg"
+            className="absolute bottom-4 right-14 h-20 w-20 rounded-[1.75rem] border border-white/40 bg-orange/80 shadow-[0_8px_28px_rgba(244,105,45,0.45)] backdrop-blur-lg"
           />
           <div className="absolute left-8 top-10 h-5 w-5 rounded-full bg-royal-soft" />
           <div className="absolute left-0 top-24 h-px w-24 bg-charcoal/30" />
@@ -183,7 +190,7 @@ export default function Home() {
               </FadeIn>
             ))}
           </div>
-          <FadeIn delay={0.3}>
+          <FadeIn delay={0.2}>
             <p className="mt-10 text-xs font-semibold uppercase tracking-widest text-stone">
               Placeholder figures — real numbers coming soon
             </p>

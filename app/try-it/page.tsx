@@ -81,7 +81,7 @@ export default function TryIt() {
             breaks it down.
           </p>
         </FadeIn>
-        <FadeIn delay={0.2}>
+        <FadeIn delay={0.14}>
           <div className="mt-10 rounded-3xl border border-white/50 bg-white/30 p-6 shadow-[0_8px_32px_rgba(43,79,224,0.15)] backdrop-blur-lg sm:p-8">
             <textarea
               placeholder="Paste an article or bill excerpt here..."
