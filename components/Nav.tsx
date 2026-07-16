@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import Wordmark from "./Wordmark";
 
 const links = [
@@ -12,6 +14,57 @@ const links = [
   { href: "/journal", label: "Journal" },
   { href: "/try-it", label: "Try It" },
 ];
+
+function AuthControl({ compact = false }: { compact?: boolean }) {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <div className="h-9 w-9" />;
+  }
+
+  if (!session) {
+    return (
+      <button
+        type="button"
+        onClick={() => signIn("google")}
+        className={`rounded-full bg-royal px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-royal-deep ${
+          compact ? "w-full" : ""
+        }`}
+      >
+        Sign in
+      </button>
+    );
+  }
+
+  return (
+    <div className={`flex items-center gap-3 ${compact ? "w-full" : ""}`}>
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-2 rounded-full px-2 py-1 text-sm font-semibold text-charcoal hover:text-royal"
+      >
+        {session.user?.image ? (
+          <Image
+            src={session.user.image}
+            alt=""
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
+        ) : null}
+        <span className={compact ? "" : "sr-only sm:not-sr-only"}>
+          Dashboard
+        </span>
+      </Link>
+      <button
+        type="button"
+        onClick={() => signOut()}
+        className="rounded-full px-3 py-2 text-sm font-semibold text-stone hover:text-royal"
+      >
+        Sign out
+      </button>
+    </div>
+  );
+}
 
 export default function Nav() {
   const pathname = usePathname();
@@ -41,6 +94,9 @@ export default function Nav() {
               </li>
             );
           })}
+          <li className="ml-2">
+            <AuthControl />
+          </li>
         </ul>
 
         {/* Mobile toggle */}
@@ -90,6 +146,9 @@ export default function Nav() {
               </li>
             );
           })}
+          <li className="pt-2">
+            <AuthControl compact />
+          </li>
         </ul>
       )}
     </header>

@@ -3,6 +3,7 @@ import { Figtree, Space_Grotesk, Lora } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import AuthProvider from "@/components/AuthProvider";
 
 const figtree = Figtree({
   variable: "--font-figtree",
@@ -48,9 +49,11 @@ export default function RootLayout({
           <div className="absolute -right-32 top-1/3 h-[28rem] w-[28rem] rounded-full bg-orange/20 blur-[110px]" />
           <div className="absolute bottom-0 left-1/4 h-[26rem] w-[26rem] rounded-full bg-royal/15 blur-[100px]" />
         </div>
-        <Nav />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <Nav />
+          {children}
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );
