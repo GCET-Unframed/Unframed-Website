@@ -3,6 +3,7 @@ import { authOptions } from "@/auth";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import FadeIn from "@/components/FadeIn";
 import BillFeed from "./BillFeed";
+import ReadingDigest from "./ReadingDigest";
 import type { InterestArea } from "@/lib/civicProfileOptions";
 
 export default async function Dashboard() {
@@ -38,6 +39,10 @@ export default async function Dashboard() {
             defaultTopics={profile.interestAreas as InterestArea[]}
           />
         )}
+      </div>
+
+      <div className="mx-auto mt-10 max-w-3xl">
+        <ReadingDigest />
       </div>
     </main>
   );
