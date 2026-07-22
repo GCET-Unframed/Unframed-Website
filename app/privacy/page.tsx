@@ -19,9 +19,9 @@ const principles = [
       "We only collect what changes what you see. If a field doesn't affect your legislation feed or reading digest, we don't ask for it.",
   },
   {
-    statement: "No article tracking.",
+    statement: "No article tracking by default.",
     detail:
-      "Ellipsis's analysis of what you read happens entirely in your browser. Article text, titles, and URLs never leave your device — only a weekly summary (article count, bias-cue-strength distribution, topic counts, and a count of distinct sources) syncs to your dashboard, and only once you've connected Ellipsis to your account.",
+      "Ellipsis's analysis of what you read happens entirely in your browser. Article text, titles, and URLs never leave your device by default — only a weekly summary (article count, bias-cue-strength distribution, topic counts, and a count of distinct sources) syncs to your dashboard, and only once you've connected Ellipsis to your account. If you separately opt in to saved-article syncing, the specific articles you choose to save — title, URL, bias scores, framing notes, and summary — sync too, and you can delete any of them from your dashboard at any time.",
   },
   {
     statement: "No selling or sharing.",
@@ -57,6 +57,12 @@ const dataTable = [
     fields:
       "Article count, bias-cue-strength distribution, topic counts, and a count of distinct sources for the week",
     why: "To show the Reading Digest panel on your dashboard. Never individual article URLs, titles, or text.",
+  },
+  {
+    category: "Saved article analyses (opt-in, off by default)",
+    fields:
+      "Article title, URL, bias scores, framing notes, and summary for each article you choose to save with syncing turned on",
+    why: "To show your saved articles on the dashboard so you can revisit their analysis without reopening Ellipsis. You turn this on separately from connecting Ellipsis, and can delete any saved article from the dashboard at any time.",
   },
 ];
 
@@ -142,8 +148,10 @@ export default function Privacy() {
               <strong className="text-charcoal">Ellipsis</strong>, our Chrome
               extension, keeps its bias and framing analysis entirely on your
               device. If you connect it to your Unframed account, it syncs
-              only the weekly aggregate summary described above — never
-              article content.
+              the weekly aggregate summary described above — never article
+              content, unless you separately turn on saved-article syncing in
+              Ellipsis&apos;s settings, in which case only the specific
+              articles you save are sent.
             </p>
           </div>
         </FadeIn>
@@ -158,12 +166,19 @@ export default function Privacy() {
         <FadeIn delay={0.06}>
           <div className="mt-6 max-w-3xl space-y-4 text-base leading-relaxed text-stone sm:text-lg">
             <p>
+              Saved article analyses are the one thing you can already manage
+              entirely yourself: turn syncing on or off anytime from
+              Ellipsis&apos;s Unframed sync settings, and delete any
+              individual saved article directly from the Saved section of
+              your dashboard.
+            </p>
+            <p>
               We&apos;re still building self-serve tools to edit your civic
               profile and delete your account directly from the dashboard —
               they aren&apos;t available yet. In the meantime, you can clear
               your Ellipsis reading history at any time from the extension,
               and you can reach out to us directly to update or remove any
-              information we hold about you.
+              other information we hold about you.
             </p>
             <p>
               We&apos;ll update this page the moment self-serve edit and

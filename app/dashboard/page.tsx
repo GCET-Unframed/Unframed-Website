@@ -6,6 +6,8 @@ import { getLastRefreshedAt } from "@/lib/bills";
 import { INTEREST_AREAS } from "@/lib/civicProfileOptions";
 import FadeIn from "@/components/FadeIn";
 import SignOutButton from "@/components/SignOutButton";
+import SavedArticles from "./SavedArticles";
+import SavedLegislation from "./SavedLegislation";
 import type { TopicCounts, WeeklyReadingDigestRecord } from "@/types/digest";
 
 function topicLabel(value: string): string {
@@ -109,7 +111,37 @@ export default async function Dashboard() {
         </FadeIn>
       </div>
 
-      <div className="mx-auto mt-10 max-w-3xl">
+      <div className="mx-auto mt-16 max-w-3xl">
+        <FadeIn>
+          <p className="text-sm font-bold uppercase tracking-widest text-stone">Saved</p>
+          <h2 className="mt-3 font-display text-2xl font-bold leading-[1.1] tracking-tight">
+            Everything you&apos;ve kept
+          </h2>
+        </FadeIn>
+
+        <div className="mt-8">
+          <FadeIn>
+            <h3 className="text-sm font-bold uppercase tracking-wide text-stone">Saved articles</h3>
+          </FadeIn>
+          <div className="mt-4">
+            <SavedArticles />
+          </div>
+        </div>
+
+        <div className="mt-10">
+          <FadeIn>
+            <h3 className="text-sm font-bold uppercase tracking-wide text-stone">Saved legislation</h3>
+          </FadeIn>
+          <div className="mt-4">
+            <SavedLegislation />
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-10 flex max-w-3xl items-center gap-4">
+        <Link href="/dashboard/settings" className="text-sm font-semibold text-stone hover:text-royal">
+          Connect Ellipsis
+        </Link>
         <SignOutButton />
       </div>
     </main>

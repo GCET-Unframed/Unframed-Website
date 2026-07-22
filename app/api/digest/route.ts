@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/auth";
+import { resolveUserId } from "@/lib/apiAuth";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { buildInsightText } from "@/lib/digestInsight";
 import { INTEREST_AREAS } from "@/lib/civicProfileOptions";
@@ -66,7 +67,8 @@ function validateDigestPayload(
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) {
+  const userId = await resolveUserId(request, session?.user?.id);
+  if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -82,7 +84,7 @@ export async function POST(request: Request) {
   const supabase = getSupabaseServerClient();
   const { error } = await supabase.from("WeeklyReadingDigest").upsert(
     {
-      userId: session.user.id,
+      userId,
       weekOf: payload.weekOf,
       articlesAnalyzed: payload.articlesAnalyzed,
       biasDistribution: payload.biasDistribution,
