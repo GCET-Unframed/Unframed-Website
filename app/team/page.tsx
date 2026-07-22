@@ -22,7 +22,7 @@ const advisors = [
 
 export default function Team() {
   return (
-    <main className="flex-1">
+    <main id="main-content" className="flex-1">
       <section className="mx-auto max-w-6xl px-5 pb-24 pt-16 sm:px-8 sm:pb-32 sm:pt-24">
         <FadeIn>
           <h1 className="font-display text-4xl font-bold tracking-tight sm:text-6xl">

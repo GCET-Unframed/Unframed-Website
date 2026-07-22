@@ -4,7 +4,7 @@ const SEGMENTS: { key: keyof BiasDistribution; label: string; barClass: string; 
   { key: "minimal", label: "Minimal", barClass: "bg-stone/25", dotClass: "bg-stone/40" },
   { key: "low", label: "Low", barClass: "bg-royal-soft", dotClass: "bg-royal-soft" },
   { key: "moderate", label: "Moderate", barClass: "bg-royal", dotClass: "bg-royal" },
-  { key: "high", label: "High", barClass: "bg-orange-deep", dotClass: "bg-orange-deep" },
+  { key: "high", label: "High", barClass: "bg-orange", dotClass: "bg-orange" },
 ];
 
 // Ellipsis measures bias-cue strength per dimension (minimal/low/moderate/high),

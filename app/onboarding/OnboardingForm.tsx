@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import FadeIn from "@/components/FadeIn";
 import {
   US_STATES,
@@ -27,6 +28,7 @@ type Step = "required" | "optional";
 export default function OnboardingForm() {
   const router = useRouter();
   const { update } = useSession();
+  const headingRef = useRef<HTMLHeadingElement>(null);
 
   const [step, setStep] = useState<Step>("required");
   const [state, setState] = useState("");
@@ -56,6 +58,14 @@ export default function OnboardingForm() {
     setEthnicity((prev) =>
       prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
     );
+  }
+
+  // The heading stays mounted across both steps (only the fields below it
+  // swap), so focusing it right after setStep moves keyboard/screen-reader
+  // attention to the new step without waiting for a re-render.
+  function goToStep(next: Step) {
+    setStep(next);
+    headingRef.current?.focus();
   }
 
   async function handleSubmit() {
@@ -93,10 +103,14 @@ export default function OnboardingForm() {
   return (
     <div className="mx-auto max-w-2xl px-5 py-16 sm:px-8 sm:py-24">
       <FadeIn immediate>
-        <p className="text-sm font-bold uppercase tracking-widest text-stone">
+        <p className="text-sm font-bold uppercase tracking-widest text-stone" aria-live="polite">
           {step === "required" ? "Step 1 of 2" : "Step 2 of 2"}
         </p>
-        <h1 className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight sm:text-5xl">
+        <h1
+          ref={headingRef}
+          tabIndex={-1}
+          className="mt-3 font-display text-3xl font-bold leading-[1.1] tracking-tight outline-none sm:text-5xl"
+        >
           {step === "required"
             ? "So we can show you what actually matters to you"
             : "A little more, if you're comfortable"}
@@ -110,11 +124,14 @@ export default function OnboardingForm() {
 
       {step === "required" ? (
         <div className="mt-10 space-y-8">
-          <Field label="State of residence" required>
+          <Field id="state" label="State of residence" required>
             <select
+              id="state"
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="w-full rounded-xl border border-stone/20 bg-white/70 px-4 py-3 text-base text-charcoal focus:border-royal focus:outline-none"
+              required
+              aria-required="true"
+              className="w-full rounded-xl border border-stone/20 bg-white/70 px-4 py-3 text-base text-charcoal focus:border-royal focus:outline-none focus:ring-2 focus:ring-royal/40"
             >
               <option value="" disabled>
                 Select your state
@@ -127,14 +144,17 @@ export default function OnboardingForm() {
             </select>
           </Field>
 
-          <Field label="City or county" required>
+          <Field id="city" label="City or county" required>
             <input
+              id="city"
               type="text"
               list="city-suggestions"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder="e.g. Austin"
-              className="w-full rounded-xl border border-stone/20 bg-white/70 px-4 py-3 text-base text-charcoal focus:border-royal focus:outline-none"
+              required
+              aria-required="true"
+              className="w-full rounded-xl border border-stone/20 bg-white/70 px-4 py-3 text-base text-charcoal focus:border-royal focus:outline-none focus:ring-2 focus:ring-royal/40"
             />
             <datalist id="city-suggestions">
               {US_CITIES.map((c) => (
@@ -143,7 +163,7 @@ export default function OnboardingForm() {
             </datalist>
           </Field>
 
-          <Field label="Interest areas" required hint="Select at least one.">
+          <Field id="interest-areas" label="Interest areas" required hint="Select at least one." asGroup>
             <div className="flex flex-wrap gap-2">
               {INTEREST_AREAS.map(({ value, label }) => {
                 const active = interestAreas.includes(value);
@@ -151,6 +171,7 @@ export default function OnboardingForm() {
                   <button
                     key={value}
                     type="button"
+                    aria-pressed={active}
                     onClick={() => toggleInterest(value)}
                     className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                       active
@@ -169,7 +190,7 @@ export default function OnboardingForm() {
             <button
               type="button"
               disabled={!requiredValid}
-              onClick={() => setStep("optional")}
+              onClick={() => goToStep("optional")}
               className="w-full rounded-full bg-royal px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-royal-deep disabled:cursor-not-allowed disabled:bg-stone/30"
             >
               Continue
@@ -179,6 +200,7 @@ export default function OnboardingForm() {
       ) : (
         <div className="mt-10 space-y-8">
           <SensitiveField
+            id="citizenship"
             label="Citizenship status"
             why="Some federal programs and rights vary by immigration status. This helps us surface only what applies to you."
           >
@@ -190,6 +212,7 @@ export default function OnboardingForm() {
           </SensitiveField>
 
           <SensitiveField
+            id="ethnicity"
             label="Ethnicity / racial identity"
             why="Some legislation and programs affect communities differently. This helps us flag when a bill is especially relevant to you."
           >
@@ -200,6 +223,7 @@ export default function OnboardingForm() {
                   <button
                     key={value}
                     type="button"
+                    aria-pressed={active}
                     onClick={() => toggleEthnicity(value)}
                     className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                       active
@@ -215,6 +239,7 @@ export default function OnboardingForm() {
           </SensitiveField>
 
           <SensitiveField
+            id="education"
             label="Education level"
             why="Some policy, like student loan legislation, applies differently depending on education level."
           >
@@ -226,6 +251,7 @@ export default function OnboardingForm() {
           </SensitiveField>
 
           <SensitiveField
+            id="income"
             label="Household income range"
             why="Many bills — like tax changes or benefit programs — only apply above or below certain income thresholds."
           >
@@ -237,6 +263,7 @@ export default function OnboardingForm() {
           </SensitiveField>
 
           <SensitiveField
+            id="age"
             label="Age range"
             why="Some legislation, like Social Security or veterans' benefits, is only relevant to specific age groups."
           >
@@ -248,13 +275,15 @@ export default function OnboardingForm() {
           </SensitiveField>
 
           {error && (
-            <p className="text-sm font-semibold text-orange-deep">{error}</p>
+            <p role="alert" className="text-sm font-semibold text-orange">
+              {error}
+            </p>
           )}
 
           <div className="flex gap-3 pt-4">
             <button
               type="button"
-              onClick={() => setStep("required")}
+              onClick={() => goToStep("required")}
               className="rounded-full px-6 py-3 text-base font-semibold text-stone hover:text-royal"
             >
               Back
@@ -273,49 +302,88 @@ export default function OnboardingForm() {
 
       <p className="mt-10 text-sm leading-relaxed text-stone">
         Your information is stored securely and used only to personalize
-        your dashboard. You can update or delete it anytime.
+        your dashboard. Read our{" "}
+        <Link href="/privacy" className="font-semibold text-royal hover:text-royal-deep">
+          Privacy Policy
+        </Link>{" "}
+        for exactly what&apos;s collected and how it&apos;s handled.
       </p>
     </div>
   );
 }
 
 function Field({
+  id,
   label,
   required,
   hint,
+  asGroup,
   children,
 }: {
+  id: string;
   label: string;
   required?: boolean;
   hint?: string;
+  asGroup?: boolean;
   children: ReactNode;
 }) {
+  const labelId = `${id}-label`;
+  const requiredMark = required && (
+    <>
+      <span aria-hidden="true" className="text-orange">
+        {" "}
+        *
+      </span>
+      <span className="sr-only"> (required)</span>
+    </>
+  );
+
   return (
     <div>
-      <label className="block text-sm font-bold text-charcoal">
-        {label}
-        {required && <span className="text-orange"> *</span>}
-      </label>
+      {asGroup ? (
+        <span id={labelId} className="block text-sm font-bold text-charcoal">
+          {label}
+          {requiredMark}
+        </span>
+      ) : (
+        <label htmlFor={id} className="block text-sm font-bold text-charcoal">
+          {label}
+          {requiredMark}
+        </label>
+      )}
       {hint && <p className="mt-1 text-sm text-stone">{hint}</p>}
-      <div className="mt-2">{children}</div>
+      <div className="mt-2" role={asGroup ? "group" : undefined} aria-labelledby={asGroup ? labelId : undefined}>
+        {children}
+      </div>
     </div>
   );
 }
 
 function SensitiveField({
+  id,
   label,
   why,
   children,
 }: {
+  id: string;
   label: string;
   why: string;
   children: ReactNode;
 }) {
+  const labelId = `${id}-label`;
+  const whyId = `${id}-why`;
+
   return (
     <div>
-      <label className="block text-sm font-bold text-charcoal">{label}</label>
-      <p className="mt-1 text-sm text-stone">{why}</p>
-      <div className="mt-2">{children}</div>
+      <span id={labelId} className="block text-sm font-bold text-charcoal">
+        {label}
+      </span>
+      <p id={whyId} className="mt-1 text-sm text-stone">
+        {why}
+      </p>
+      <div className="mt-2" role="group" aria-labelledby={labelId} aria-describedby={whyId}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -337,6 +405,7 @@ function ChipGroup<T extends string>({
           <button
             key={opt.value}
             type="button"
+            aria-pressed={active}
             onClick={() => onChange(opt.value)}
             className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
               active

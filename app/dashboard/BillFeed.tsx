@@ -81,11 +81,12 @@ export default function BillFeed({
     <div>
       <div className="sticky top-0 z-10 -mx-5 border-b border-stone/10 bg-white/80 px-5 py-4 backdrop-blur sm:-mx-8 sm:px-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex gap-2">
+          <div className="flex gap-2" role="group" aria-label="Filter by scope">
             {(Object.keys(SCOPE_LABELS) as Scope[]).map((s) => (
               <button
                 key={s}
                 type="button"
+                aria-pressed={scope === s}
                 onClick={() => setScope(s)}
                 className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
                   scope === s ? "bg-royal text-white" : "bg-white/70 text-stone hover:text-royal"
@@ -104,13 +105,14 @@ export default function BillFeed({
             </p>
           )}
         </div>
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filter by topic">
           {INTEREST_AREAS.map(({ value, label }) => {
             const active = topics.includes(value);
             return (
               <button
                 key={value}
                 type="button"
+                aria-pressed={active}
                 onClick={() => toggleTopic(value)}
                 className={`rounded-full px-3 py-1 text-xs font-semibold transition-colors ${
                   active
@@ -129,7 +131,7 @@ export default function BillFeed({
         {loading && <p className="text-stone">Loading legislation…</p>}
 
         {!loading && error && (
-          <p className="text-sm font-semibold text-orange-deep">{error}</p>
+          <p role="alert" className="text-sm font-semibold text-orange">{error}</p>
         )}
 
         {!loading && !error && bills.length === 0 && (

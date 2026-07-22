@@ -39,6 +39,9 @@ export default function RootLayout({
       className={`${figtree.variable} ${spaceGrotesk.variable} ${lora.variable} min-h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         {/* Ambient glassmorphism glow — fixed, blurred, low-opacity blobs
             sitting behind every page on top of the continuous gradient. */}
         <div

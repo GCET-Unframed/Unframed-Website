@@ -15,9 +15,17 @@
   --color-orange: #f4692d;
   --color-orange-deep: #d9541c;
   --color-orange-soft: #ffe4d2;
+  /* Darker than orange-deep specifically for white-on-orange text/badges and
+     orange body text on white — orange-deep only clears ~4:1 in those uses,
+     below the 4.5:1 WCAG AA threshold for normal text. */
+  --color-orange-ink: #b8430f;
 
-  /* Used only for the hero's middle decorative circle. */
+  /* Decorative accent (hero's middle circle, journal timeline markers) and
+     the About page's one accent badge. */
   --color-pink: #ea2e8c;
+  /* Darker pink for white text on the About page's accent badge — pink at
+     full strength is ~4:1 with white, below the 4.5:1 AA threshold. */
+  --color-pink-ink: #c91f74;
 
   --font-sans: var(--font-figtree);
   --font-display: var(--font-grotesk);
@@ -46,6 +54,45 @@ body {
 ::selection {
   background: var(--color-royal);
   color: #ffffff;
+}
+
+/* Sitewide focus-visible baseline so keyboard users get a consistent,
+   clearly visible indicator without every component needing its own
+   focus styling. Components that need outline:none for a custom ring
+   (e.g. the try-it textarea) still get this as a fallback via
+   focus-visible's default browser heuristics. */
+:focus-visible {
+  outline: 2px solid var(--color-royal);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -3rem;
+  z-index: 100;
+  background: var(--color-royal);
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: top 0.15s ease-out;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Entrance animations — pure CSS everywhere (hero AND every FadeIn

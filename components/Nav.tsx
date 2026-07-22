@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import Wordmark from "./Wordmark";
 
 const links = [
@@ -12,7 +12,7 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/team", label: "Our Team" },
   { href: "/journal", label: "Journal" },
-  { href: "/try-it", label: "Try It" },
+  { href: "/try-it", label: "Ellipsis" },
 ];
 
 function AuthControl({ compact = false }: { compact?: boolean }) {
@@ -55,13 +55,6 @@ function AuthControl({ compact = false }: { compact?: boolean }) {
           Dashboard
         </span>
       </Link>
-      <button
-        type="button"
-        onClick={() => signOut()}
-        className="rounded-full px-3 py-2 text-sm font-semibold text-stone hover:text-royal"
-      >
-        Sign out
-      </button>
     </div>
   );
 }
@@ -69,6 +62,15 @@ function AuthControl({ compact = false }: { compact?: boolean }) {
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/40 bg-white/60 backdrop-blur-lg">
@@ -104,7 +106,8 @@ export default function Nav() {
           type="button"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          onClick={() => setOpen(!open)}
+          aria-controls="mobile-nav-menu"
+          onClick={() => setOpen((current) => !current)}
           className="flex h-10 w-10 items-center justify-center rounded-full text-charcoal sm:hidden"
         >
           <span className="relative block h-4 w-5">
@@ -129,7 +132,10 @@ export default function Nav() {
 
       {/* Mobile menu */}
       {open && (
-        <ul className="border-t border-white/40 bg-white/70 px-5 pb-4 pt-2 backdrop-blur-lg sm:hidden">
+        <ul
+          id="mobile-nav-menu"
+          className="border-t border-white/40 bg-white/70 px-5 pb-4 pt-2 backdrop-blur-lg sm:hidden"
+        >
           {links.map(({ href, label }) => {
             const active = pathname === href;
             return (

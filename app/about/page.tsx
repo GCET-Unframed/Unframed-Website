@@ -43,7 +43,7 @@ const coreBeliefs = [
 
 export default function About() {
   return (
-    <main className="flex-1">
+    <main id="main-content" className="flex-1">
       {/* Mission */}
       <section className="mx-auto max-w-6xl px-5 pb-20 pt-16 sm:px-8 sm:pt-24">
         <FadeIn>

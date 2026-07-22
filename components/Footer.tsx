@@ -17,10 +17,11 @@ export default function Footer() {
           <Link href="/team" className="hover:text-royal">Our Team</Link>
           <Link href="/journal" className="hover:text-royal">Journal</Link>
           <Link href="/try-it" className="hover:text-royal">Try It</Link>
+          <Link href="/privacy" className="hover:text-royal">Privacy</Link>
         </nav>
       </div>
       <div className="border-t border-charcoal/10">
-        <p className="mx-auto max-w-6xl px-5 py-4 text-xs text-stone/70 sm:px-8">
+        <p className="mx-auto max-w-6xl px-5 py-4 text-xs text-stone sm:px-8">
           © {new Date().getFullYear()} Unframed. A student-led civic initiative.
         </p>
       </div>

@@ -39,12 +39,14 @@ function heroAnim(
 
 export default function Home() {
   return (
-    <main className="flex-1">
+    <main id="main-content" className="flex-1">
       {/* Hero — asymmetric two-column on desktop, fills the viewport.
           Decorative figures sit in the right column, vertically aligned
           with the headline/tagline, as a hero-only visual — not tied to
-          any section below. */}
-      <section className="mx-auto grid min-h-screen max-w-6xl content-center items-center gap-12 px-5 pb-20 pt-16 sm:px-8 sm:pt-24 lg:grid-cols-[7fr_5fr] lg:gap-8">
+          any section below. min-h is reduced on mobile (vs. full 100dvh)
+          since the content doesn't fill a full mobile viewport height,
+          which was leaving a large empty gap before the next section. */}
+      <section className="mx-auto grid min-h-[80vh] max-w-6xl content-center items-center gap-12 px-5 pb-20 pt-16 sm:min-h-screen sm:px-8 sm:pt-24 lg:grid-cols-[7fr_5fr] lg:gap-8">
         <div>
           <p
             style={heroAnim(0)}
@@ -129,9 +131,9 @@ export default function Home() {
       <section>
         <div className="mx-auto max-w-6xl px-5 py-20 sm:px-8 sm:py-24">
           <FadeIn>
-            <p className="text-sm font-bold uppercase tracking-widest text-stone">
+            <h2 className="text-sm font-bold uppercase tracking-widest text-stone">
               About Us
-            </p>
+            </h2>
           </FadeIn>
           <div className="mt-5 max-w-3xl space-y-6">
             {aboutUsParagraphs.map((paragraph, i) => (
@@ -178,6 +180,7 @@ export default function Home() {
       {/* Impact stats (placeholder) */}
       <section>
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-20">
+          <h2 className="sr-only">Our impact</h2>
           <div className="grid gap-10 sm:grid-cols-3">
             {stats.map(({ value, label }, i) => (
               <FadeIn key={label} delay={i * 0.08}>
@@ -209,7 +212,7 @@ export default function Home() {
           <FadeIn delay={0.1}>
             <Link
               href="/try-it"
-              className="inline-block rounded-full border border-white/30 bg-orange/85 px-9 py-4 text-base font-bold text-white shadow-[0_8px_24px_rgba(244,105,45,0.35)] backdrop-blur-md transition hover:bg-orange-deep/90"
+              className="inline-block rounded-full border border-white/30 bg-orange/92 px-9 py-4 text-base font-bold text-white shadow-[0_8px_24px_rgba(244,105,45,0.35)] backdrop-blur-md transition hover:bg-orange"
             >
               Try It
             </Link>

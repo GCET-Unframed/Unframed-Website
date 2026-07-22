@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function OnboardingPage() {
   return (
-    <main className="flex-1">
+    <main id="main-content" className="flex-1">
       <OnboardingForm />
     </main>
   );
